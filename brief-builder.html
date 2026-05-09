@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ARTWAY 提案 brief 產生器（eztry 簡化版）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #BA9972; --on-primary: #0D0804;
+  --p-deep: #0D0804; --p-dark: #1E170E; --p-mid: #5C4A36; --p-light: #EEDAC2;
+  --surface: #191919;
+  --on-surface: #E7E7E7; --on-surface-var: #C4C4C4; --on-surface-hint: #858585;
+  --outline-variant: #595959;
+  --bl: #3A92FA; --cy: #23A6A6; --li: #B5BA06; --mg: #E652A3;
+  --font: 'Roboto', 'Noto Sans TC', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #0a0a0a; min-height: 100vh; font-family: var(--font); color: var(--on-surface); -webkit-font-smoothing: antialiased; }
+body { padding: 32px 16px 80px; }
+
+.container { max-width: 760px; margin: 0 auto; }
+
+header { margin-bottom: 32px; text-align: center; }
+header h1 { font-size: 28px; font-weight: 600; color: var(--p-light); margin-bottom: 8px; letter-spacing: -.5px; }
+header .lede { font-size: 14px; color: var(--on-surface-var); line-height: 22px; max-width: 560px; margin: 0 auto; }
+header .badge { display: inline-block; background: var(--p-dark); color: var(--primary); padding: 4px 12px; border-radius: 4px; font-size: 11px; font-family: 'Roboto', monospace; letter-spacing: 1.5px; margin-top: 12px; text-transform: uppercase; }
+
+section { background: var(--surface); border: 1px solid var(--outline-variant); border-radius: 8px; padding: 24px 28px; margin-bottom: 16px; }
+section h2 { font-size: 13px; letter-spacing: 1.8px; text-transform: uppercase; color: var(--primary); margin-bottom: 16px; font-family: 'Roboto', monospace; font-weight: 600; }
+section .field-hint { font-size: 12px; color: var(--on-surface-hint); margin-bottom: 14px; line-height: 1.6; }
+
+label { display: block; font-size: 11px; color: var(--on-surface-hint); margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase; font-family: 'Roboto', monospace; }
+label .req { color: var(--primary); margin-left: 2px; }
+
+input[type="text"], input[type="url"], input[type="email"], input[type="tel"], input[type="number"], textarea, select {
+  width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--outline-variant); color: var(--on-surface);
+  padding: 10px 12px; border-radius: 4px; font-family: var(--font); font-size: 14px; margin-bottom: 16px;
+  outline: none; transition: border-color 0.15s;
+}
+/* 隱藏 number input 的上下箭頭（讓視覺乾淨）*/
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"] { -moz-appearance: textfield; }
+input:focus, textarea:focus, select:focus { border-color: var(--primary); }
+textarea { min-height: 120px; resize: vertical; line-height: 22px; }
+select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--on-surface-hint) 50%), linear-gradient(135deg, var(--on-surface-hint) 50%, transparent 50%); background-position: calc(100% - 18px) 50%, calc(100% - 12px) 50%; background-size: 6px 6px; background-repeat: no-repeat; padding-right: 32px; cursor: pointer; }
+select option { background: #191919; color: var(--on-surface); padding: 8px; }
+.inline-num {
+  flex: 0 0 80px !important;
+  width: 80px !important;
+  min-width: 80px !important;
+  max-width: 80px !important;
+  margin: 0 !important;
+  padding: 8px 10px !important;
+  text-align: center;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--outline-variant);
+  color: var(--on-surface);
+  border-radius: 4px;
+  font-family: var(--font);
+  font-size: 14px;
+}
+.inline-num:focus { border-color: var(--primary); outline: none; }
+.page-range { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+.page-range input {
+  flex: 0 0 100px;
+  width: 100px;
+  margin-bottom: 0;
+}
+.field-help { font-size: 11px; color: var(--on-surface-hint); margin: -2px 0 12px 0; line-height: 1.6; }
+input:disabled, .inline-num:disabled { opacity: 0.35; cursor: not-allowed; }
+/* checkbox-row 內 number 輸入和文字 label 對齊（用 helper class 不影響服務勾選列）*/
+.checkbox-row .name.name-prefix { flex: 0 0 auto !important; white-space: nowrap; }
+.checkbox-row .name.name-desc { flex: 1 1 auto !important; white-space: normal; min-width: 0; }
+.checkbox-row input[type="text"] { flex: 1; margin-bottom: 0 !important; padding: 8px 10px !important; min-width: 0; }
+
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.checkbox-row { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: rgba(0,0,0,0.25); border: 1px solid var(--outline-variant); border-radius: 4px; cursor: pointer; transition: all 0.15s; font-size: 14px; margin-bottom: 6px; }
+.checkbox-row:hover { border-color: var(--primary); }
+.checkbox-row:has(input:checked) { border-color: var(--primary); background: rgba(186,153,114,0.10); }
+.checkbox-row input[type="checkbox"] { accent-color: var(--primary); margin: 0; flex-shrink: 0; cursor: pointer; }
+.checkbox-row .name { flex: 1; color: var(--on-surface); }
+.checkbox-row .tag { color: var(--on-surface-hint); font-size: 10px; font-family: 'Roboto', monospace; letter-spacing: 1.5px; padding: 2px 7px; border-radius: 3px; background: rgba(0,0,0,0.3); }
+.checkbox-row .tag.bl { color: var(--bl); }
+.checkbox-row .tag.cy { color: var(--cy); }
+.checkbox-row .tag.li { color: var(--li); }
+.checkbox-row .tag.mg { color: var(--mg); }
+
+.children { padding: 8px 0 8px 32px; border-left: 2px solid var(--outline-variant); margin: -2px 0 8px 14px; }
+.children .checkbox-row { background: transparent; border-color: transparent; padding: 6px 12px; margin-bottom: 2px; }
+.children .checkbox-row:hover { background: rgba(186,153,114,0.05); border-color: var(--outline-variant); }
+.children .checkbox-row:has(input:checked) { background: rgba(186,153,114,0.05); border-color: var(--primary); }
+
+.checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.checkbox-grid .checkbox-row { margin-bottom: 0; }
+
+.exhibition-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; margin-bottom: 8px; }
+.exhibition-row input { margin: 0; }
+.exhibition-row .remove-btn { background: transparent; border: 1px solid var(--outline-variant); color: var(--on-surface-hint); padding: 0 14px; border-radius: 4px; cursor: pointer; font-size: 14px; font-family: inherit; }
+.exhibition-row .remove-btn:hover { border-color: var(--mg); color: #FFD3E6; }
+.add-exhibition-btn { width: 100%; background: transparent; border: 1px dashed var(--outline-variant); color: var(--on-surface-var); padding: 10px; border-radius: 4px; cursor: pointer; font-family: var(--font); font-size: 13px; transition: all 0.15s; margin-top: 4px; }
+.add-exhibition-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+.toggle-options { display: flex; gap: 8px; margin-bottom: 20px; }
+.toggle-options label { flex: 1; text-align: center; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid var(--outline-variant); border-radius: 4px; cursor: pointer; margin: 0; font-size: 14px; color: var(--on-surface-var); transition: all 0.15s; text-transform: none; letter-spacing: 0; font-family: var(--font); }
+.toggle-options label:has(input:checked) { border-color: var(--primary); background: var(--p-dark); color: var(--primary); font-weight: 500; }
+.toggle-options input { display: none; }
+
+.fixed-info { background: rgba(0,0,0,0.3); border: 1px solid var(--outline-variant); border-radius: 4px; padding: 10px 12px; font-size: 13px; color: var(--on-surface-var); margin-bottom: 8px; font-family: 'Roboto', monospace; }
+
+.char-count { text-align: right; font-size: 11px; color: var(--on-surface-hint); margin-top: -12px; margin-bottom: 12px; font-family: 'Roboto', monospace; }
+.char-count.warn { color: #FFD3E6; }
+
+.actions { text-align: center; padding: 24px 0; }
+.btn-primary { background: var(--primary); color: var(--on-primary); border: none; padding: 14px 32px; border-radius: 4px; font-size: 14px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; font-family: var(--font); transition: background 0.15s; }
+.btn-primary:hover { background: var(--p-light); }
+
+.feedback { padding: 12px 14px; border-radius: 4px; margin-top: 12px; font-size: 13px; line-height: 1.6; display: none; text-align: left; }
+.feedback.visible { display: block; }
+.feedback.success { background: rgba(35,166,166,0.12); border: 1px solid var(--cy); color: #70FAFA; }
+.feedback.error { background: rgba(230,82,163,0.12); border: 1px solid var(--mg); color: #FFD3E6; }
+
+details { background: rgba(0,0,0,0.2); border: 1px solid var(--outline-variant); border-radius: 4px; padding: 12px 16px; margin-bottom: 12px; }
+details summary { cursor: pointer; color: var(--primary); font-size: 12px; font-family: 'Roboto', monospace; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; user-select: none; }
+details[open] summary { margin-bottom: 12px; }
+details p, details li { font-size: 13px; color: var(--on-surface-var); line-height: 1.7; }
+details ul { margin: 8px 0 12px 24px; }
+details code { background: rgba(186,153,114,0.12); color: var(--p-light); padding: 1px 6px; border-radius: 3px; font-family: 'Roboto', monospace; font-size: 12px; }
+
+pre { background: rgba(0,0,0,0.4); border: 1px solid var(--outline-variant); border-radius: 4px; padding: 12px; font-family: 'Roboto', monospace; font-size: 12px; color: var(--on-surface-var); white-space: pre-wrap; word-wrap: break-word; max-height: 400px; overflow-y: auto; line-height: 18px; }
+
+footer { text-align: center; margin-top: 32px; font-size: 11px; color: var(--on-surface-hint); font-family: 'Roboto', monospace; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<header>
+  <h1>📝 ARTWAY 提案 brief 產生器</h1>
+  <p class="lede">填完表單 → 產生結構化 brief → 貼到 Claude.ai Project (eztry) 生成純展示 HTML（無編輯器、可列印 16:9 PDF）</p>
+  <div class="badge">EZTRY · 簡化實驗版</div>
+</header>
+
+<!-- ========== 客戶資訊 ========== -->
+<section>
+  <h2>1. 客戶資訊</h2>
+
+  <label>客戶類別 <span class="req">*</span></label>
+  <select id="client-category">
+    <option value="">請選擇類別</option>
+    <option>行銷公司</option>
+    <option>策展單位</option>
+    <option>政府 / 公部門</option>
+    <option>一般公司行號</option>
+    <option>私立美術館 / 博物館</option>
+    <option>協會</option>
+    <option>大型園區</option>
+  </select>
+
+  <div class="field-row">
+    <div>
+      <label>客戶全名 <span class="req">*</span></label>
+      <input type="text" id="client-name" placeholder="例：國立故宮博物院">
+    </div>
+    <div>
+      <label>客戶網站</label>
+      <input type="url" id="client-website" placeholder="https://www.npm.gov.tw">
+    </div>
+  </div>
+</section>
+
+<!-- ========== 提案標的 ========== -->
+<section>
+  <h2>2. 提案標的</h2>
+  <p class="field-hint"><strong>特定展覽</strong>：客戶已有明確展覽要做，這份提案針對該展。<br><strong>無特定展覽</strong>：希望客戶採用我們的服務（不綁定特定展檔）。</p>
+
+  <div class="toggle-options">
+    <label><input type="radio" name="proposal-type" value="exhibition" checked>特定展覽</label>
+    <label><input type="radio" name="proposal-type" value="general">無特定展覽</label>
+  </div>
+
+  <div id="exhibition-section">
+    <label>展覽資訊 <span class="req">*</span>（最多 3 個）</label>
+    <div id="exhibitions"></div>
+    <button type="button" class="add-exhibition-btn" onclick="addExhibition()">+ 新增展覽</button>
+  </div>
+
+  <div id="general-section" style="display:none">
+    <p class="field-hint" style="margin: 0; padding: 12px 14px; background: rgba(0,0,0,0.25); border: 1px solid var(--outline-variant); border-radius: 4px;">
+      ✓ 已選「無特定展覽」── 不需填展覽資訊。AI 會以「介紹我們服務 + 為何適合此客戶」的角度寫提案。
+    </p>
+  </div>
+</section>
+
+<!-- ========== 客戶情境 ========== -->
+<section>
+  <h2>3. 客戶情境（兩個都選填、貼越多 AI 越懂）</h2>
+
+  <label>3-1. 會議紀錄 / 客戶口述背景</label>
+  <p class="field-help">業務跟客戶開會的逐字稿、需求討論、口述脈絡。直接從 Word / Notion / 手寫筆記複製貼上。</p>
+  <textarea id="meeting-notes" placeholder="（這裡可以貼很長，AI 會讀完）" oninput="updateCharCount()"></textarea>
+  <div class="char-count" id="char-count">0 字</div>
+
+  <label style="margin-top:16px">3-2. 最終目標 / 期待成果</label>
+  <p class="field-help">這個提案要客戶看完後產生什麼結果？KPI / 商業目標 / 對 ARTWAY 的期待 / 提案要解決什麼問題。</p>
+  <textarea id="final-goal" placeholder="例：希望客戶半年內導入 GoTour、年底前國際觀眾觸及 +30%、想拿到全館長期合約..."></textarea>
+</section>
+
+<!-- ========== 預期服務 ========== -->
+<section>
+  <h2>4. 預期提供的服務 <span class="req">*</span></h2>
+  <p class="field-hint">勾選本次提案要包含的服務。會影響服務章節數量、頁數、章節色。</p>
+
+  <div class="checkbox-row">
+    <input type="checkbox" id="svc-D" data-svc="實境展間">
+    <span class="name">實境展間</span>
+    <span class="tag bl">BLUE</span>
+  </div>
+  <div class="checkbox-row">
+    <input type="checkbox" id="svc-B" data-svc="GoTour 隨身導覽系統">
+    <span class="name">GoTour 隨身導覽系統</span>
+    <span class="tag cy">CYAN</span>
+  </div>
+
+  <div class="checkbox-row">
+    <input type="checkbox" id="svc-C" onchange="toggleCSeries(this)">
+    <span class="name">語音導覽內容製作</span>
+    <span class="tag li">LIME</span>
+  </div>
+  <div class="children">
+    <div class="checkbox-row">
+      <input type="checkbox" class="c-child" id="svc-C1" data-svc="文稿撰寫">
+      <span class="name">文稿撰寫</span>
+    </div>
+    <div class="checkbox-row">
+      <input type="checkbox" class="c-child" id="svc-C2" data-svc="錄音配音">
+      <span class="name">錄音配音</span>
+    </div>
+    <div class="checkbox-row">
+      <input type="checkbox" class="c-child" id="svc-C3" data-svc="導覽硬體租借">
+      <span class="name">導覽硬體租借</span>
+    </div>
+    <div class="checkbox-row">
+      <input type="checkbox" class="c-child" id="svc-C4" data-svc="設計輸出物">
+      <span class="name">設計輸出物</span>
+    </div>
+  </div>
+
+  <div class="checkbox-row">
+    <input type="checkbox" id="svc-A" data-svc="GoPage 展覽專頁">
+    <span class="name">GoPage 展覽專頁</span>
+    <span class="tag mg">MAGENTA</span>
+  </div>
+</section>
+
+<!-- ========== 提案風格 ========== -->
+<section>
+  <h2>5. 提案風格 <span class="req">*</span></h2>
+  <p class="field-hint">影響整份提案的視覺基調（顏色 / 字型 / 氣質）。請依客戶屬性挑一個。</p>
+
+  <div class="checkbox-row">
+    <input type="radio" id="style-warm" name="proposal-style" value="文青溫暖版">
+    <span class="name">文青溫暖版</span>
+    <span class="tag" style="background:#B8955A;color:#FAF8F5;font-family:'Cormorant Garamond',serif;letter-spacing:.2em">CREAM · 金 · SERIF</span>
+  </div>
+  <p class="field-hint" style="margin:4px 0 16px 28px;font-size:12px;color:var(--on-surface-hint)">適合：美術館、博物館、文化機構、藝術節、文化策展單位</p>
+
+  <div class="checkbox-row">
+    <input type="radio" id="style-tech" name="proposal-style" value="科技黑金版">
+    <span class="name">科技黑金版</span>
+    <span class="tag" style="background:#191919;color:#BA9972;letter-spacing:1.5px">BLACK · 金棕 · SANS</span>
+  </div>
+  <p class="field-hint" style="margin:4px 0 0 28px;font-size:12px;color:var(--on-surface-hint)">適合：商業展覽、企業形象展、品牌活動、觀光景點、政府單位</p>
+</section>
+
+<!-- ========== 簡報細節（選填） ========== -->
+<section>
+  <h2>6. 簡報細節（全部選填）</h2>
+  <p class="field-hint">不指定 AI 會自由發揮。下面任何一項有想法就填、跳過任何一項都 OK。</p>
+
+  <!-- 期待頁數 -->
+  <label>期待主內容頁數</label>
+  <p class="field-help">⚠️ <strong style="color:var(--primary)">能不指定就不指定</strong>，給 AI 發揮空間最自由。「AI 推薦」是預設選項。</p>
+  <div class="checkbox-row">
+    <input type="radio" id="pages-auto" name="page-mode" value="auto" checked>
+    <span class="name">AI 自行推薦（預設、推薦做法）</span>
+  </div>
+  <div class="checkbox-row">
+    <input type="radio" id="pages-manual" name="page-mode" value="manual">
+    <span class="name name-prefix">業務指定</span>
+    <input type="number" id="pages-min" class="inline-num" min="1" max="50" placeholder="最少" disabled>
+    <span class="name name-prefix">~</span>
+    <input type="number" id="pages-max" class="inline-num" min="1" max="50" placeholder="最多" disabled>
+    <span class="name name-prefix">頁</span>
+  </div>
+
+  <!-- 內容強調 -->
+  <label style="margin-top:16px">內容強調（可複選）</label>
+  <p class="field-help">告訴 AI 整份提案的調性偏向</p>
+  <div class="checkbox-row">
+    <input type="checkbox" id="emp-emotion">
+    <span class="name">偏向情感（說故事、客戶感受、文化價值）</span>
+  </div>
+  <div class="checkbox-row">
+    <input type="checkbox" id="emp-feature">
+    <span class="name">強調功能介紹（規格、技術、流程細節）</span>
+  </div>
+  <div class="checkbox-row">
+    <input type="checkbox" id="emp-custom">
+    <span class="name name-prefix">需強調</span>
+    <input type="text" id="emp-custom-text" placeholder="自填重點，例：永續、品牌價值、ROI...">
+  </div>
+
+  <!-- 附件 / 特殊頁面 -->
+  <label style="margin-top:16px">預留特殊頁面（可複選）</label>
+  <p class="field-help">勾選後填數字 = 這份提案要保留 N 頁這種版型</p>
+  <div class="checkbox-row">
+    <input type="checkbox" id="att-cases">
+    <span class="name name-prefix">需預留</span>
+    <input type="number" id="att-cases-num" class="inline-num" min="1" max="20" placeholder="N">
+    <span class="name name-desc">頁案例（6 格圖卡 + 標題）</span>
+  </div>
+  <div class="checkbox-row">
+    <input type="checkbox" id="att-photos">
+    <span class="name name-prefix">需預留</span>
+    <input type="number" id="att-photos-num" class="inline-num" min="1" max="20" placeholder="N">
+    <span class="name name-desc">頁純照片頁（每頁 ≤5 張、排版自由變化）</span>
+  </div>
+  <div class="checkbox-row">
+    <input type="checkbox" id="att-fullbleed">
+    <span class="name name-prefix">需預留</span>
+    <input type="number" id="att-fullbleed-num" class="inline-num" min="1" max="20" placeholder="N">
+    <span class="name name-desc">頁扣除標題後的滿版頁面</span>
+  </div>
+</section>
+
+<!-- ========== 業務資訊 ========== -->
+<section>
+  <h2>7. 業務資訊（提案結尾頁）</h2>
+  <p class="field-hint">第一次填會記住，下次自動帶入。地址固定為公司地址。</p>
+
+  <div class="field-row">
+    <div>
+      <label>業務姓名 <span class="req">*</span></label>
+      <input type="text" id="sales-name" placeholder="例：楊仁豪 Howard Yang" oninput="saveSalesInfo()">
+    </div>
+    <div>
+      <label>部門 <span class="req">*</span></label>
+      <input type="text" id="sales-dept" placeholder="例：事業開發部" oninput="saveSalesInfo()">
+    </div>
+  </div>
+
+  <div class="field-row">
+    <div>
+      <label>Email <span class="req">*</span></label>
+      <input type="email" id="sales-email" placeholder="example@artogo.tw" oninput="saveSalesInfo()">
+    </div>
+    <div>
+      <label>Phone <span class="req">*</span></label>
+      <input type="tel" id="sales-phone" placeholder="+886 0912 345 678" oninput="saveSalesInfo()">
+    </div>
+  </div>
+
+  <label>地址（公司固定）</label>
+  <div class="fixed-info">11070 台北市信義區基隆路二段 56 號 4 樓之 2</div>
+</section>
+
+<!-- ========== 操作 ========== -->
+<div class="actions">
+  <button class="btn-primary" onclick="generateBrief()">📋 產生並複製 brief 給 Claude.ai</button>
+  <div class="feedback success" id="copy-success">
+    ✓ <strong>已複製到剪貼簿。</strong><br>
+    1. 切換到 Claude.ai → 進入「ARTWAY 提案 eztry」Project<br>
+    2. 在對話框 Ctrl+V 貼上<br>
+    3. 等 1–3 分鐘 → AI 會回給你一份純展示 HTML（artifact）<br>
+    4. 點 artifact 旁的下載 → 存成 .html 檔 → 雙擊打開 → Ctrl+P 印 PDF（16:9 橫向）
+  </div>
+  <div class="feedback error" id="error-msg"></div>
+</div>
+
+<details>
+  <summary>📄 預覽 brief 內容</summary>
+  <pre id="brief-preview">填完表單後，按上方按鈕產生 brief。</pre>
+</details>
+
+<details>
+  <summary>⚙ 管理員一次性設定指南（業務忽略此區）</summary>
+
+  <p style="color: var(--mg-90); font-size: 12px; margin-bottom: 12px;">⚠ 此區僅 Project 管理員會用到。業務正常使用本頁不需動 Claude.ai Project 設定。</p>
+
+  <p><strong>① 建立 Project</strong></p>
+  <p>Claude.ai → Projects → New project → 命名「ARTWAY 提案生成」</p>
+
+  <p style="margin-top:12px;"><strong>② Files：上傳 Project 知識</strong></p>
+  <ul>
+    <li><code>業務提案簡報規格.md</code> ── 視覺規範（顏色 / 字型 / 版型語法）</li>
+    <li><code>template.html</code> ── 視覺參考實作（AI 看不抄整份，可從中學習風格）</li>
+    <li>服務目錄（從 Notion 同步，方法見 ③）</li>
+  </ul>
+  <p style="font-size: 12px; color: var(--on-surface-hint); margin-top: 4px;">註：<code>html-rules_editor.md</code> 是編輯器規格，AI 生成的 artifact 不含編輯器（自由模式），所以不用上傳。</p>
+
+  <p style="margin-top:12px;"><strong>③ 服務目錄同步（二選一）</strong></p>
+  <ul>
+    <li><strong>方法 A（推薦）</strong>：Claude.ai 個人設定 → Connectors → 連結 Notion ── 之後 Claude 在 Project 對話時可自動讀</li>
+    <li>方法 B：手動把 Notion 服務目錄複製貼到 .md 檔，當第 4 個 Files 上傳，更新時手動重傳</li>
+  </ul>
+
+  <p style="margin-top:12px;"><strong>④ Instructions：把 <code>Instructions.md</code> 內容貼到 Project Instructions 欄位</strong></p>
+  <p>開啟同資料夾的 <code>Instructions.md</code> → 全選複製 → 貼到 Project Instructions（在 Project 右上角）。</p>
+  <p style="margin-top:8px; color: var(--on-surface-hint); font-size: 12px;">未來想調整 AI 行為（例如新增提案結構規則）只動 <code>Instructions.md</code>，改完重貼到 Project Instructions 即可。</p>
+
+  <p style="margin-top:16px;"><strong>⑤ 完成後</strong></p>
+  <p>業務 workflow：</p>
+  <ol style="font-size: 13px; color: var(--on-surface-var); line-height: 1.8; margin-left: 24px;">
+    <li>開本頁 brief-builder.html → 填表 → 複製 brief</li>
+    <li>到 Claude.ai 「ARTWAY 提案生成」Project → 開新對話 → 貼上 brief → 送出</li>
+    <li>等 1-3 分鐘 → AI 回 HTML artifact（含 print CSS）</li>
+    <li>下載 artifact 為 .html → 雙擊打開 → <strong>瀏覽器 Ctrl+P → 另存為 PDF</strong></li>
+  </ol>
+  <p style="font-size: 12px; color: var(--on-surface-hint); margin-top: 8px;">如果想用編輯器（點字直接改、AI 重生這頁等）做進一步調整，可開 <code>template.html</code> 手動將 slide 內容複製過去。</p>
+</details>
+
+<footer>ARTWAY 提案生成系統 · brief-builder · v1</footer>
+
+</div>
+
+<script>
+/* ============== 業務資訊 localStorage ============== */
+function saveSalesInfo() {
+  const info = {
+    name: document.getElementById('sales-name').value,
+    dept: document.getElementById('sales-dept').value,
+    email: document.getElementById('sales-email').value,
+    phone: document.getElementById('sales-phone').value
+  };
+  localStorage.setItem('artway_sales_info', JSON.stringify(info));
+}
+function loadSalesInfo() {
+  try {
+    const info = JSON.parse(localStorage.getItem('artway_sales_info') || '{}');
+    if (info.name) document.getElementById('sales-name').value = info.name;
+    if (info.dept) document.getElementById('sales-dept').value = info.dept;
+    if (info.email) document.getElementById('sales-email').value = info.email;
+    if (info.phone) document.getElementById('sales-phone').value = info.phone;
+  } catch {}
+}
+
+/* ============== 特定展覽 / 無特定展覽 toggle ============== */
+document.querySelectorAll('input[name="proposal-type"]').forEach(r => {
+  r.addEventListener('change', () => {
+    const type = document.querySelector('input[name="proposal-type"]:checked').value;
+    document.getElementById('exhibition-section').style.display = type === 'exhibition' ? '' : 'none';
+    document.getElementById('general-section').style.display = type === 'general' ? '' : 'none';
+  });
+});
+
+/* ============== 展覽動態列 ============== */
+function addExhibition() {
+  const list = document.getElementById('exhibitions');
+  if (list.children.length >= 3) {
+    showError('最多只能填 3 個展覽');
+    return;
+  }
+  const idx = list.children.length + 1;
+  const row = document.createElement('div');
+  row.className = 'exhibition-row';
+  row.innerHTML =
+    '<input type="text" class="ex-name" placeholder="展覽 ' + idx + ' 名稱">' +
+    '<input type="url" class="ex-url" placeholder="網址（選填）">' +
+    '<button type="button" class="remove-btn" onclick="removeExhibition(this)" title="移除">✕</button>';
+  list.appendChild(row);
+}
+function removeExhibition(btn) {
+  const list = document.getElementById('exhibitions');
+  if (list.children.length <= 1) {
+    showError('至少要保留 1 個展覽欄位');
+    return;
+  }
+  btn.parentElement.remove();
+}
+addExhibition();
+
+/* ============== 期待頁數 radio 切換 ============== */
+document.querySelectorAll('input[name="page-mode"]').forEach(r => {
+  r.addEventListener('change', () => {
+    const isManual = document.getElementById('pages-manual').checked;
+    document.getElementById('pages-min').disabled = !isManual;
+    document.getElementById('pages-max').disabled = !isManual;
+    if (!isManual) {
+      // 切回 AI 推薦時清空 input 值
+      document.getElementById('pages-min').value = '';
+      document.getElementById('pages-max').value = '';
+    }
+  });
+});
+// 點 number input 自動切到「業務指定」
+['pages-min', 'pages-max'].forEach(id => {
+  document.getElementById(id).addEventListener('focus', () => {
+    document.getElementById('pages-manual').checked = true;
+    document.getElementById('pages-min').disabled = false;
+    document.getElementById('pages-max').disabled = false;
+  });
+});
+
+/* ============== 字數 ============== */
+function updateCharCount() {
+  const ta = document.getElementById('meeting-notes');
+  const count = ta.value.length;
+  const display = document.getElementById('char-count');
+  if (count > 5000) {
+    display.textContent = count + ' 字 ⚠ 超過 5000 字會增加 AI 處理時間';
+    display.classList.add('warn');
+  } else {
+    display.textContent = count + ' 字';
+    display.classList.remove('warn');
+  }
+}
+
+/* ============== C 系列父子勾選 ============== */
+function toggleCSeries(parent) {
+  document.querySelectorAll('.c-child').forEach(c => c.checked = parent.checked);
+}
+document.querySelectorAll('.c-child').forEach(c => {
+  c.addEventListener('change', () => {
+    const all = Array.from(document.querySelectorAll('.c-child'));
+    const cParent = document.getElementById('svc-C');
+    const allChecked = all.every(c => c.checked);
+    const anyChecked = all.some(c => c.checked);
+    cParent.checked = allChecked;
+    cParent.indeterminate = anyChecked && !allChecked;
+  });
+});
+
+/* ============== 產生 brief ============== */
+function generateBrief() {
+  const errors = [];
+
+  const cat = document.getElementById('client-category').value;
+  const name = document.getElementById('client-name').value.trim();
+  if (!cat) errors.push('客戶類別未選');
+  if (!name) errors.push('客戶全名未填');
+
+  const proposalType = document.querySelector('input[name="proposal-type"]:checked').value;
+  const isEx = proposalType === 'exhibition';
+  let exhibitions = [];
+  if (isEx) {
+    exhibitions = Array.from(document.querySelectorAll('.exhibition-row')).map(row => ({
+      name: row.querySelector('.ex-name').value.trim(),
+      url: row.querySelector('.ex-url').value.trim()
+    })).filter(e => e.name);
+    if (exhibitions.length === 0) errors.push('特定展覽模式下，至少要填 1 個展覽名稱');
+  }
+  // 無特定展覽：不需驗證 exhibition / project 任何欄位
+
+  // 服務
+  const services = [];
+  ['svc-A', 'svc-B', 'svc-D'].forEach(id => {
+    const cb = document.getElementById(id);
+    if (cb.checked) services.push(cb.dataset.svc);
+  });
+  document.querySelectorAll('.c-child').forEach(c => {
+    if (c.checked) services.push(c.dataset.svc);
+  });
+  if (services.length === 0) errors.push('至少要勾 1 個預期服務');
+
+  // 提案風格
+  const styleEl = document.querySelector('input[name="proposal-style"]:checked');
+  const proposalStyle = styleEl ? styleEl.value : '';
+  if (!proposalStyle) errors.push('提案風格未選（文青溫暖版 / 科技黑金版）');
+
+  // 業務資訊
+  const sName = document.getElementById('sales-name').value.trim();
+  const sDept = document.getElementById('sales-dept').value.trim();
+  const sEmail = document.getElementById('sales-email').value.trim();
+  const sPhone = document.getElementById('sales-phone').value.trim();
+  if (!sName || !sDept || !sEmail || !sPhone) {
+    errors.push('業務資訊未填完（姓名 / 部門 / Email / Phone 都要填）');
+  }
+
+  if (errors.length > 0) {
+    showError(errors.join('；'));
+    return;
+  }
+
+  // 組 brief
+  const website = document.getElementById('client-website').value.trim();
+  const notes = document.getElementById('meeting-notes').value.trim();
+  let brief = '# ARTWAY 提案 brief\n\n';
+
+  brief += '## 客戶\n';
+  brief += '- 類別：' + cat + '\n';
+  brief += '- 名稱：' + name + '\n';
+  if (website) brief += '- 網站：' + website + '\n';
+  brief += '\n';
+
+  if (isEx) {
+    brief += '## 提案標的（特定展覽）\n';
+    exhibitions.forEach((ex, i) => {
+      brief += '- 展覽 ' + (i+1) + '：' + ex.name;
+      if (ex.url) brief += ' — ' + ex.url;
+      brief += '\n';
+    });
+  } else {
+    brief += '## 提案標的（無特定展覽）\n';
+    brief += '- 客戶尚無明確展覽，本提案重點在「介紹我們的服務 + 為何適合此客戶」\n';
+    brief += '- 提案以服務介紹為主軸，不綁定特定展檔\n';
+  }
+  brief += '\n';
+
+  // 3-1 會議紀錄
+  if (notes) {
+    brief += '## 會議紀錄 / 客戶口述背景\n';
+    brief += notes + '\n\n';
+  }
+
+  // 3-2 最終目標
+  const finalGoal = document.getElementById('final-goal').value.trim();
+  if (finalGoal) {
+    brief += '## 最終目標 / 期待成果\n';
+    brief += finalGoal + '\n\n';
+  }
+
+  brief += '## 預期提供的服務\n';
+  services.forEach(s => brief += '- ' + s + '\n');
+  brief += '\n';
+
+  brief += '## 提案風格\n';
+  brief += '- ' + proposalStyle + '\n';
+  brief += '\n';
+
+  // 簡報細節（全部選填、有填才寫進 brief）
+  const isManualPages = document.getElementById('pages-manual').checked;
+  const pagesMin = document.getElementById('pages-min').value.trim();
+  const pagesMax = document.getElementById('pages-max').value.trim();
+  const empEmotion = document.getElementById('emp-emotion').checked;
+  const empFeature = document.getElementById('emp-feature').checked;
+  const empCustom = document.getElementById('emp-custom').checked;
+  const empCustomText = document.getElementById('emp-custom-text').value.trim();
+  const attCases = document.getElementById('att-cases').checked;
+  const attCasesNum = document.getElementById('att-cases-num').value.trim();
+  const attPhotos = document.getElementById('att-photos').checked;
+  const attPhotosNum = document.getElementById('att-photos-num').value.trim();
+  const attFullbleed = document.getElementById('att-fullbleed').checked;
+  const attFullbleedNum = document.getElementById('att-fullbleed-num').value.trim();
+
+  // 內容強調 + 附件 收集
+  const emphasis = [];
+  if (empEmotion) emphasis.push('偏向情感（說故事 / 客戶感受 / 文化價值）');
+  if (empFeature) emphasis.push('強調功能介紹（規格 / 技術 / 流程細節）');
+  if (empCustom && empCustomText) emphasis.push('需強調：' + empCustomText);
+  const attachments = [];
+  let attachmentTotal = 0;
+  if (attCases && attCasesNum) {
+    attachments.push('案例頁 × ' + attCasesNum + ' 頁（**6 格圖卡 + 標題** 版型）');
+    attachmentTotal += parseInt(attCasesNum) || 0;
+  }
+  if (attPhotos && attPhotosNum) {
+    attachments.push('純照片頁 × ' + attPhotosNum + ' 頁（每頁最多 5 張、排版需自由有變化）');
+    attachmentTotal += parseInt(attPhotosNum) || 0;
+  }
+  if (attFullbleed && attFullbleedNum) {
+    attachments.push('滿版頁 × ' + attFullbleedNum + ' 頁（扣除標題後滿版）');
+    attachmentTotal += parseInt(attFullbleedNum) || 0;
+  }
+
+  // 只要任何欄位有值才寫 section
+  const hasContent = isManualPages || emphasis.length || attachments.length;
+  if (hasContent) {
+    brief += '## 簡報細節（業務指定偏好）\n\n';
+
+    // 主內容頁數
+    brief += '### 主內容頁數\n';
+    if (isManualPages && (pagesMin || pagesMax)) {
+      brief += '- 業務指定：' + (pagesMin || '?') + '-' + (pagesMax || '?') + ' 頁\n';
+    } else {
+      brief += '- AI 自行推薦（業務希望給你發揮空間，請依 brief 內容自己決定主內容該幾頁）\n';
+    }
+    brief += '\n';
+
+    // 內容強調
+    if (emphasis.length) {
+      brief += '### 內容強調（整份提案的調性偏向）\n';
+      emphasis.forEach(e => brief += '- ' + e + '\n');
+      brief += '\n';
+    }
+
+    // 附件 / 特殊版型
+    if (attachments.length) {
+      brief += '### 附件 / 特殊版型（額外加在主內容後面、不算入主內容頁數）\n';
+      attachments.forEach(a => brief += '- ' + a + '\n');
+      brief += '\n';
+      brief += '⚠️ **重要提醒給 AI**：上面 ' + attachmentTotal + ' 頁是「附件」，**不算入主內容頁數**。';
+      if (isManualPages && (pagesMin || pagesMax)) {
+        brief += '主內容請按業務指定的 ' + (pagesMin || '?') + '-' + (pagesMax || '?') + ' 頁，附件 ' + attachmentTotal + ' 頁額外加在後面。最終總頁數 = 主內容（' + (pagesMin || '?') + '-' + (pagesMax || '?') + '） + 附件（' + attachmentTotal + '）。';
+      } else {
+        brief += '主內容該幾頁你自己判斷（可參考 8-15 頁），附件 ' + attachmentTotal + ' 頁額外加在後面。最終總頁數 = 主內容 + 附件（' + attachmentTotal + '）。';
+      }
+      brief += '\n\n';
+    }
+  }
+
+  brief += '## 業務聯絡資訊（提案結尾頁用）\n';
+  brief += '- 姓名：' + sName + '\n';
+  brief += '- 部門：' + sDept + '\n';
+  brief += '- Email：' + sEmail + '\n';
+  brief += '- Phone：' + sPhone + '\n';
+  brief += '- 地址：11070 台北市信義區基隆路二段 56 號 4 樓之 2\n';
+
+  // 預覽 + 複製
+  document.getElementById('brief-preview').textContent = brief;
+
+  navigator.clipboard.writeText(brief).then(() => {
+    showSuccess();
+  }).catch(err => {
+    showError('複製失敗：' + err.message + '。請手動從下方「預覽 brief」複製。');
+  });
+}
+
+function showError(msg) {
+  const el = document.getElementById('error-msg');
+  el.textContent = '⚠ ' + msg;
+  el.classList.add('visible');
+  document.getElementById('copy-success').classList.remove('visible');
+  setTimeout(() => el.classList.remove('visible'), 8000);
+}
+function showSuccess() {
+  document.getElementById('copy-success').classList.add('visible');
+  document.getElementById('error-msg').classList.remove('visible');
+  setTimeout(() => document.getElementById('copy-success').classList.remove('visible'), 15000);
+}
+
+/* ============== init ============== */
+loadSalesInfo();
+</script>
+
+</body>
+</html>
