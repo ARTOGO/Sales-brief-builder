@@ -329,7 +329,7 @@ footer { text-align: center; margin-top: 32px; font-size: 11px; color: var(--on-
     <input type="checkbox" id="att-photos">
     <span class="name name-prefix">需預留</span>
     <input type="number" id="att-photos-num" class="inline-num" min="1" max="20" placeholder="N">
-    <span class="name name-desc">頁純照片頁（每頁最多 5 張，比例 16:9 / 9:16 / 1:1）</span>
+    <span class="name name-desc">頁純照片頁（每頁最多 5 張；比例 16:9 / 9:16 / 1:1 / 3:4 / 4:3）</span>
   </div>
   <div class="checkbox-row">
     <input type="checkbox" id="att-fullbleed">
@@ -660,7 +660,7 @@ function generateBrief() {
     attachmentTotal += parseInt(attCasesNum) || 0;
   }
   if (attPhotos && attPhotosNum) {
-    attachments.push('純照片頁 × ' + attPhotosNum + ' 頁（每頁最多 5 張；比例 16:9 / 9:16 / 1:1，單頁內所有照片用同一比例）');
+    attachments.push('純照片頁 × ' + attPhotosNum + ' 頁（每頁最多 5 張，排版可自由；比例只能 16:9 / 9:16 / 1:1 / 3:4 / 4:3，不要其他怪比例；單張寬度至少佔頁寬 1/3）');
     attachmentTotal += parseInt(attPhotosNum) || 0;
   }
   if (attFullbleed && attFullbleedNum) {
