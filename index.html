@@ -24,9 +24,9 @@ body { padding: 32px 16px 80px; }
 .container { max-width: 760px; margin: 0 auto; }
 
 header { margin-bottom: 32px; text-align: center; }
-header h1 { font-size: 28px; font-weight: 600; color: var(--p-light); margin-bottom: 8px; letter-spacing: -.5px; }
-header .lede { font-size: 14px; color: var(--on-surface-var); line-height: 22px; max-width: 560px; margin: 0 auto; }
-header .badge { display: inline-block; background: var(--p-dark); color: var(--primary); padding: 4px 12px; border-radius: 4px; font-size: 11px; font-family: 'Roboto', monospace; letter-spacing: 1.5px; margin-top: 12px; text-transform: uppercase; }
+header h1 { font-size: 26px; font-weight: 600; color: var(--p-light); margin-bottom: 6px; letter-spacing: -.5px; }
+header .lede { font-size: 11px; color: var(--on-surface-hint); line-height: 1.7; max-width: 520px; margin: 0 auto; }
+header .badge { display: inline-block; background: rgba(30,20,10,0.6); color: var(--on-surface-hint); padding: 2px 8px; border-radius: 3px; font-size: 9px; font-family: 'Roboto', monospace; letter-spacing: 1.8px; margin-top: 8px; text-transform: uppercase; border: 1px solid var(--outline-variant); }
 
 section { background: var(--surface); border: 1px solid var(--outline-variant); border-radius: 8px; padding: 24px 28px; margin-bottom: 16px; }
 section h2 { font-size: 13px; letter-spacing: 1.8px; text-transform: uppercase; color: var(--primary); margin-bottom: 16px; font-family: 'Roboto', monospace; font-weight: 600; }
@@ -113,7 +113,7 @@ input:disabled, .inline-num:disabled { opacity: 0.35; cursor: not-allowed; }
 .fixed-info { background: rgba(0,0,0,0.3); border: 1px solid var(--outline-variant); border-radius: 4px; padding: 10px 12px; font-size: 13px; color: var(--on-surface-var); margin-bottom: 8px; font-family: 'Roboto', monospace; }
 
 .char-count { text-align: right; font-size: 11px; color: var(--on-surface-hint); margin-top: -12px; margin-bottom: 12px; font-family: 'Roboto', monospace; }
-.char-count.warn { color: #FFD3E6; }
+.char-count.warn { color: #FFBBA0; }
 
 .actions { text-align: center; padding: 24px 0; }
 .btn-primary { background: var(--primary); color: var(--on-primary); border: none; padding: 14px 32px; border-radius: 4px; font-size: 14px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; font-family: var(--font); transition: background 0.15s; }
@@ -122,7 +122,7 @@ input:disabled, .inline-num:disabled { opacity: 0.35; cursor: not-allowed; }
 .feedback { padding: 12px 14px; border-radius: 4px; margin-top: 12px; font-size: 13px; line-height: 1.6; display: none; text-align: left; }
 .feedback.visible { display: block; }
 .feedback.success { background: rgba(35,166,166,0.12); border: 1px solid var(--cy); color: #70FAFA; }
-.feedback.error { background: rgba(230,82,163,0.12); border: 1px solid var(--mg); color: #FFD3E6; }
+.feedback.error { background: rgba(210,55,20,0.12); border: 1px solid #C84018; color: #FFBBA0; }
 
 details { background: rgba(0,0,0,0.2); border: 1px solid var(--outline-variant); border-radius: 4px; padding: 12px 16px; margin-bottom: 12px; }
 details summary { cursor: pointer; color: var(--primary); font-size: 12px; font-family: 'Roboto', monospace; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; user-select: none; }
@@ -134,6 +134,24 @@ details code { background: rgba(186,153,114,0.12); color: var(--p-light); paddin
 pre { background: rgba(0,0,0,0.4); border: 1px solid var(--outline-variant); border-radius: 4px; padding: 12px; font-family: 'Roboto', monospace; font-size: 12px; color: var(--on-surface-var); white-space: pre-wrap; word-wrap: break-word; max-height: 400px; overflow-y: auto; line-height: 18px; }
 
 footer { text-align: center; margin-top: 32px; font-size: 11px; color: var(--on-surface-hint); font-family: 'Roboto', monospace; letter-spacing: 1px; }
+
+/* === 照片版型網格選擇器 === */
+.photo-layout-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 0 0 6px 14px; padding: 10px 0 10px 14px; border-left: 2px solid var(--outline-variant); }
+.pl-cell { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 8px 6px 6px; background: rgba(0,0,0,0.25); border: 1px solid var(--outline-variant); border-radius: 4px; transition: border-color 0.15s, background 0.15s; }
+.pl-cell.pl-active { border-color: var(--primary); background: rgba(186,153,114,0.10); }
+.layout-thumb { width: 100%; aspect-ratio: 16/9; background: #0d0d0d; border-radius: 2px; overflow: hidden; border: 1px solid #2a2a2a; }
+.layout-thumb svg { display: block; width: 100%; height: 100%; }
+.layout-code { font-size: 10px; font-family: 'Roboto', monospace; color: var(--primary); letter-spacing: 1px; line-height: 1; }
+.pl-num { width: 100%; text-align: center; background: rgba(0,0,0,0.3); border: 1px solid var(--outline-variant); color: var(--on-surface); padding: 5px 4px; border-radius: 4px; font-size: 13px; font-family: var(--font); margin: 0; outline: none; transition: border-color 0.15s; }
+.pl-num:focus { border-color: var(--primary); }
+.photo-total-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 56px; height: 38px; background: rgba(0,0,0,0.3); border: 1px solid var(--outline-variant); border-radius: 4px; color: var(--primary); font-weight: 600; font-size: 14px; font-family: 'Roboto', monospace; padding: 0 8px; transition: border-color 0.15s; }
+.photo-total-badge.has-val { border-color: var(--primary); }
+/* 整行可點 */
+.checkbox-row { cursor: pointer; }
+/* 驗證錯誤高亮 */
+.field-error, .field-error input, .field-error select, .field-error textarea { border-color: #C84018 !important; background: rgba(210,55,20,0.08) !important; }
+.field-error { animation: err-shake 0.35s ease; }
+@keyframes err-shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
 </style>
 </head>
 <body>
@@ -141,8 +159,8 @@ footer { text-align: center; margin-top: 32px; font-size: 11px; color: var(--on-
 <div class="container">
 
 <header>
-  <h1>📝 ARTWAY 提案 brief 產生器</h1>
-  <p class="lede">填完表單 → 產生結構化 brief → 貼到 Claude.ai Project (eztry) 生成純展示 HTML（無編輯器、可列印 16:9 PDF）</p>
+  <h1>ARTWAY 提案 BRIEF 產生器</h1>
+  <p class="lede">填完表單 → 產生結構化 Brief → 貼到 Project 新開對話窗 → 討論架構 → 生成純展示 HTML → 加編輯器 → 業務手動修改 → 可列印 16:9 PDF</p>
   <div class="badge">EZTRY · 簡化實驗版</div>
 </header>
 
@@ -219,18 +237,15 @@ footer { text-align: center; margin-top: 32px; font-size: 11px; color: var(--on-
   <div class="checkbox-row">
     <input type="checkbox" id="svc-D" data-svc="實境展間">
     <span class="name">實境展間</span>
-    <span class="tag bl">BLUE</span>
   </div>
   <div class="checkbox-row">
     <input type="checkbox" id="svc-B" data-svc="GoTour 隨身導覽系統">
     <span class="name">GoTour 隨身導覽系統</span>
-    <span class="tag cy">CYAN</span>
   </div>
 
   <div class="checkbox-row">
     <input type="checkbox" id="svc-C" onchange="toggleCSeries(this)">
     <span class="name">語音導覽內容製作</span>
-    <span class="tag li">LIME</span>
   </div>
   <div class="children">
     <div class="checkbox-row">
@@ -254,7 +269,6 @@ footer { text-align: center; margin-top: 32px; font-size: 11px; color: var(--on-
   <div class="checkbox-row">
     <input type="checkbox" id="svc-A" data-svc="GoPage 展覽專頁">
     <span class="name">GoPage 展覽專頁</span>
-    <span class="tag mg">MAGENTA</span>
   </div>
 </section>
 
@@ -271,7 +285,7 @@ footer { text-align: center; margin-top: 32px; font-size: 11px; color: var(--on-
   <p class="field-hint" style="margin:4px 0 16px 28px;font-size:12px;color:var(--on-surface-hint)">適合：美術館、博物館、文化機構、藝術節、文化策展單位</p>
 
   <div class="checkbox-row">
-    <input type="radio" id="style-tech" name="proposal-style" value="科技黑金版">
+    <input type="radio" id="style-tech" name="proposal-style" value="科技黑金版" checked>
     <span class="name">科技黑金版</span>
     <span class="tag" style="background:#191919;color:#BA9972;letter-spacing:1.5px">BLACK · 金棕 · SANS</span>
   </div>
@@ -303,17 +317,17 @@ footer { text-align: center; margin-top: 32px; font-size: 11px; color: var(--on-
   <label style="margin-top:16px">內容強調（可複選）</label>
   <p class="field-help">告訴 AI 整份提案的調性偏向</p>
   <div class="checkbox-row">
-    <input type="checkbox" id="emp-emotion">
+    <input type="checkbox" id="emp-emotion" checked>
     <span class="name">偏向情感（說故事、客戶感受、文化價值）</span>
   </div>
   <div class="checkbox-row">
-    <input type="checkbox" id="emp-feature">
+    <input type="checkbox" id="emp-feature" checked>
     <span class="name">強調功能介紹（規格、技術、流程細節）</span>
   </div>
   <div class="checkbox-row">
     <input type="checkbox" id="emp-custom">
     <span class="name name-prefix">需強調</span>
-    <input type="text" id="emp-custom-text" placeholder="自填重點，例：永續、品牌價值、ROI...">
+    <input type="text" id="emp-custom-text" placeholder="自填重點，例：永續、品牌價值、ROI..." oninput="if(this.value.trim()) document.getElementById('emp-custom').checked=true">
   </div>
 
   <!-- 附件 / 特殊頁面 -->
@@ -322,19 +336,72 @@ footer { text-align: center; margin-top: 32px; font-size: 11px; color: var(--on-
   <div class="checkbox-row">
     <input type="checkbox" id="att-cases">
     <span class="name name-prefix">需預留</span>
-    <input type="number" id="att-cases-num" class="inline-num" min="1" max="20" placeholder="N">
+    <input type="number" id="att-cases-num" class="inline-num" min="1" max="20" placeholder="N" oninput="if(this.value) document.getElementById('att-cases').checked=true">
     <span class="name name-desc">頁案例（6 格圖卡 + 標題）</span>
   </div>
-  <div class="checkbox-row">
-    <input type="checkbox" id="att-photos">
+  <!-- 照片頁版型網格 -->
+  <div class="checkbox-row" style="margin-bottom:4px;pointer-events:none">
+    <input type="checkbox" id="att-photos-any" disabled style="opacity:0.6">
     <span class="name name-prefix">需預留</span>
-    <input type="number" id="att-photos-num" class="inline-num" min="1" max="20" placeholder="N">
-    <span class="name name-desc">頁純照片頁（每頁最多 5 張；比例 16:9 / 9:16 / 1:1 / 3:4 / 4:3）</span>
+    <span id="photo-total" class="photo-total-badge">—</span>
+    <span class="name name-desc">頁純照片頁（填頁數即選取，空白 = 不需要）</span>
+  </div>
+  <div class="photo-layout-grid">
+    <div class="pl-cell" id="pl-cell-l1">
+      <div class="layout-thumb"><svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="29" height="34" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="34" y="1" width="29" height="34" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/></svg></div>
+      <span class="layout-code">L1</span>
+      <input type="number" id="pl-l1-num" class="pl-num" min="1" max="20" placeholder="—" oninput="updatePhotoTotal()">
+    </div>
+    <div class="pl-cell" id="pl-cell-l2">
+      <div class="layout-thumb"><svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="1" width="17" height="34" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="23" y="1" width="17" height="34" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="43" y="1" width="18" height="34" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/></svg></div>
+      <span class="layout-code">L2</span>
+      <input type="number" id="pl-l2-num" class="pl-num" min="1" max="20" placeholder="—" oninput="updatePhotoTotal()">
+    </div>
+    <div class="pl-cell" id="pl-cell-l3">
+      <div class="layout-thumb"><svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="38" height="34" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="42" y="1" width="21" height="34" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/></svg></div>
+      <span class="layout-code">L3</span>
+      <input type="number" id="pl-l3-num" class="pl-num" min="1" max="20" placeholder="—" oninput="updatePhotoTotal()">
+    </div>
+    <div class="pl-cell" id="pl-cell-l4">
+      <div class="layout-thumb"><svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="31" height="34" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="35" y="1" width="28" height="15" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="35" y="20" width="28" height="15" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/></svg></div>
+      <span class="layout-code">L4</span>
+      <input type="number" id="pl-l4-num" class="pl-num" min="1" max="20" placeholder="—" oninput="updatePhotoTotal()">
+    </div>
+    <div class="pl-cell" id="pl-cell-l5">
+      <div class="layout-thumb"><svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="29" height="16" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="34" y="1" width="29" height="16" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="1" y="21" width="29" height="14" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="34" y="21" width="29" height="14" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/></svg></div>
+      <span class="layout-code">L5</span>
+      <input type="number" id="pl-l5-num" class="pl-num" min="1" max="20" placeholder="—" oninput="updatePhotoTotal()">
+    </div>
+    <div class="pl-cell" id="pl-cell-l6">
+      <div class="layout-thumb"><svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="62" height="16" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="1" y="21" width="19" height="14" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="23" y="21" width="18" height="14" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="44" y="21" width="19" height="14" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/></svg></div>
+      <span class="layout-code">L6</span>
+      <input type="number" id="pl-l6-num" class="pl-num" min="1" max="20" placeholder="—" oninput="updatePhotoTotal()">
+    </div>
+    <div class="pl-cell" id="pl-cell-l7">
+      <div class="layout-thumb"><svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="29" height="16" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="34" y="1" width="29" height="16" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="1" y="21" width="62" height="14" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/></svg></div>
+      <span class="layout-code">L7</span>
+      <input type="number" id="pl-l7-num" class="pl-num" min="1" max="20" placeholder="—" oninput="updatePhotoTotal()">
+    </div>
+    <div class="pl-cell" id="pl-cell-l8">
+      <div class="layout-thumb"><svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="20" height="34" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="24" y="2" width="11" height="9" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="38" y="2" width="11" height="9" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="52" y="2" width="10" height="9" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="24" y="14" width="39" height="21" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/></svg></div>
+      <span class="layout-code">L8</span>
+      <input type="number" id="pl-l8-num" class="pl-num" min="1" max="20" placeholder="—" oninput="updatePhotoTotal()">
+    </div>
+    <div class="pl-cell" id="pl-cell-l9">
+      <div class="layout-thumb"><svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="18" height="34" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="22" y="1" width="41" height="20" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="22" y="24" width="19" height="11" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="44" y="24" width="19" height="11" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/></svg></div>
+      <span class="layout-code">L9</span>
+      <input type="number" id="pl-l9-num" class="pl-num" min="1" max="20" placeholder="—" oninput="updatePhotoTotal()">
+    </div>
+    <div class="pl-cell" id="pl-cell-l10">
+      <div class="layout-thumb"><svg viewBox="0 0 64 36" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="18" height="16" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="23" y="1" width="18" height="16" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="45" y="1" width="18" height="16" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="1" y="21" width="18" height="14" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="23" y="21" width="18" height="14" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/><rect x="45" y="21" width="18" height="14" rx="1" fill="#222" stroke="#555" stroke-width="0.8"/></svg></div>
+      <span class="layout-code">L10</span>
+      <input type="number" id="pl-l10-num" class="pl-num" min="1" max="20" placeholder="—" oninput="updatePhotoTotal()">
+    </div>
   </div>
   <div class="checkbox-row">
     <input type="checkbox" id="att-fullbleed">
     <span class="name name-prefix">需預留</span>
-    <input type="number" id="att-fullbleed-num" class="inline-num" min="1" max="20" placeholder="N">
+    <input type="number" id="att-fullbleed-num" class="inline-num" min="1" max="20" placeholder="N" oninput="if(this.value) document.getElementById('att-fullbleed').checked=true">
     <span class="name name-desc">頁扣除標題後的滿版頁面</span>
   </div>
 </section>
@@ -386,43 +453,6 @@ footer { text-align: center; margin-top: 32px; font-size: 11px; color: var(--on-
 <details>
   <summary>📄 預覽 brief 內容</summary>
   <pre id="brief-preview">填完表單後，按上方按鈕產生 brief。</pre>
-</details>
-
-<details>
-  <summary>⚙ 管理員一次性設定指南（業務忽略此區）</summary>
-
-  <p style="color: var(--mg-90); font-size: 12px; margin-bottom: 12px;">⚠ 此區僅 Project 管理員會用到。業務正常使用本頁不需動 Claude.ai Project 設定。</p>
-
-  <p><strong>① 建立 Project</strong></p>
-  <p>Claude.ai → Projects → New project → 命名「ARTWAY 提案生成」</p>
-
-  <p style="margin-top:12px;"><strong>② Files：上傳 Project 知識</strong></p>
-  <ul>
-    <li><code>業務提案簡報規格.md</code> ── 視覺規範（顏色 / 字型 / 版型語法）</li>
-    <li><code>template.html</code> ── 視覺參考實作（AI 看不抄整份，可從中學習風格）</li>
-    <li>服務目錄（從 Notion 同步，方法見 ③）</li>
-  </ul>
-  <p style="font-size: 12px; color: var(--on-surface-hint); margin-top: 4px;">註：<code>html-rules_editor.md</code> 是編輯器規格，AI 生成的 artifact 不含編輯器（自由模式），所以不用上傳。</p>
-
-  <p style="margin-top:12px;"><strong>③ 服務目錄同步（二選一）</strong></p>
-  <ul>
-    <li><strong>方法 A（推薦）</strong>：Claude.ai 個人設定 → Connectors → 連結 Notion ── 之後 Claude 在 Project 對話時可自動讀</li>
-    <li>方法 B：手動把 Notion 服務目錄複製貼到 .md 檔，當第 4 個 Files 上傳，更新時手動重傳</li>
-  </ul>
-
-  <p style="margin-top:12px;"><strong>④ Instructions：把 <code>Instructions.md</code> 內容貼到 Project Instructions 欄位</strong></p>
-  <p>開啟同資料夾的 <code>Instructions.md</code> → 全選複製 → 貼到 Project Instructions（在 Project 右上角）。</p>
-  <p style="margin-top:8px; color: var(--on-surface-hint); font-size: 12px;">未來想調整 AI 行為（例如新增提案結構規則）只動 <code>Instructions.md</code>，改完重貼到 Project Instructions 即可。</p>
-
-  <p style="margin-top:16px;"><strong>⑤ 完成後</strong></p>
-  <p>業務 workflow：</p>
-  <ol style="font-size: 13px; color: var(--on-surface-var); line-height: 1.8; margin-left: 24px;">
-    <li>開本頁 brief-builder.html → 填表 → 複製 brief</li>
-    <li>到 Claude.ai 「ARTWAY 提案生成」Project → 開新對話 → 貼上 brief → 送出</li>
-    <li>等 1-3 分鐘 → AI 回 HTML artifact（含 print CSS）</li>
-    <li>下載 artifact 為 .html → 雙擊打開 → <strong>瀏覽器 Ctrl+P → 另存為 PDF</strong></li>
-  </ol>
-  <p style="font-size: 12px; color: var(--on-surface-hint); margin-top: 8px;">如果想用編輯器（點字直接改、AI 重生這頁等）做進一步調整，可開 <code>template.html</code> 手動將 slide 內容複製過去。</p>
 </details>
 
 <footer>ARTWAY 提案生成系統 · brief-builder · v1</footer>
@@ -536,14 +566,111 @@ document.querySelectorAll('.c-child').forEach(c => {
   });
 });
 
+/* ============== 照片版型總計 ============== */
+function updatePhotoTotal() {
+  let total = 0;
+  ['l1','l2','l3','l4','l5','l6','l7','l8','l9','l10'].forEach(id => {
+    const val = parseInt(document.getElementById('pl-' + id + '-num').value) || 0;
+    const cell = document.getElementById('pl-cell-' + id);
+    cell.classList.toggle('pl-active', val > 0);
+    total += val;
+  });
+  const badge = document.getElementById('photo-total');
+  badge.textContent = total > 0 ? total : '—';
+  badge.classList.toggle('has-val', total > 0);
+  const anyCb = document.getElementById('att-photos-any');
+  if (anyCb) anyCb.checked = total > 0;
+}
+
+/* ============== 整行可點切換 checkbox / radio ============== */
+document.querySelectorAll('.checkbox-row').forEach(row => {
+  row.addEventListener('click', e => {
+    if (['INPUT','BUTTON','A','LABEL'].includes(e.target.tagName)) return;
+    const cb = row.querySelector('input[type="checkbox"]:not([disabled]), input[type="radio"]:not([disabled])');
+    if (cb) cb.click();
+  });
+});
+
+/* ============== 照片版型 CSS 範本 ============== */
+const PHOTO_CSS = {
+  l1: `/* L1: 2張並排（等寬）*/
+.photo-page.l1{display:flex;padding:16px 16px 28px;gap:12px;overflow:hidden}
+.photo-page.l1 .uz{flex:1;min-width:0;overflow:hidden;border-radius:4px}
+.photo-page.l1 .uz img{width:100%;height:100%;object-fit:cover;display:block}`,
+
+  l2: `/* L2: 3張直式並排 */
+.photo-page.l2{display:flex;padding:16px 16px 28px;gap:12px;overflow:hidden;align-items:center;justify-content:center}
+.photo-page.l2 .uz{flex:0 0 auto;height:100%;aspect-ratio:9/16;max-height:100%;overflow:hidden;border-radius:4px}
+.photo-page.l2 .uz img{width:100%;height:100%;object-fit:cover;display:block}`,
+
+  l3: `/* L3: 左大右小 */
+.photo-page.l3{display:flex;padding:16px 16px 28px;gap:12px;overflow:hidden}
+.photo-page.l3 .uz-l{flex:0 0 62%;overflow:hidden;border-radius:4px}
+.photo-page.l3 .uz-r{flex:1;min-width:0;overflow:hidden;border-radius:4px}
+.photo-page.l3 .uz-l img,.photo-page.l3 .uz-r img{width:100%;height:100%;object-fit:cover;display:block}`,
+
+  l4: `/* L4: 左1張 + 右2張堆疊 */
+.photo-page.l4{display:flex;padding:16px 16px 28px;gap:12px;overflow:hidden}
+.photo-page.l4 .uz-l{flex:0 0 52%;overflow:hidden;border-radius:4px}
+.photo-page.l4 .stack{flex:1;display:flex;flex-direction:column;gap:12px;min-width:0}
+.photo-page.l4 .stack .uz{flex:1;overflow:hidden;border-radius:4px}
+.photo-page.l4 .uz img{width:100%;height:100%;object-fit:cover;display:block}`,
+
+  l5: `/* L5: 4張 2×2 等格 */
+.photo-page.l5{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;padding:16px 16px 28px;gap:12px;overflow:hidden}
+.photo-page.l5 .uz{overflow:hidden;border-radius:4px}
+.photo-page.l5 .uz img{width:100%;height:100%;object-fit:cover;display:block}`,
+
+  l6: `/* L6: 上橫幅 + 下3張並排 */
+.photo-page.l6{display:flex;flex-direction:column;padding:16px 16px 28px;gap:12px;overflow:hidden}
+.photo-page.l6 .uz-top{flex:1;overflow:hidden;border-radius:4px}
+.photo-page.l6 .row{display:flex;flex:1;gap:12px}
+.photo-page.l6 .row .uz{flex:1;overflow:hidden;border-radius:4px}
+.photo-page.l6 .uz img{width:100%;height:100%;object-fit:cover;display:block}`,
+
+  l7: `/* L7: 上2張 + 下橫幅 */
+.photo-page.l7{display:flex;flex-direction:column;padding:16px 16px 28px;gap:12px;overflow:hidden}
+.photo-page.l7 .row{display:flex;flex:1;gap:12px}
+.photo-page.l7 .row .uz{flex:1;overflow:hidden;border-radius:4px}
+.photo-page.l7 .uz-bot{flex:1;overflow:hidden;border-radius:4px}
+.photo-page.l7 .uz img{width:100%;height:100%;object-fit:cover;display:block}`,
+
+  l8: `/* L8: 左直 + 右橫（下對齊） */
+.photo-page.l8{display:flex;padding:16px 16px 28px;gap:12px;overflow:hidden;align-items:flex-end}
+.photo-page.l8 .uz-port{flex:0 0 auto;aspect-ratio:2/3;height:100%;overflow:hidden;border-radius:4px}
+.photo-page.l8 .uz-land{flex:1;aspect-ratio:16/9;align-self:flex-end;max-height:52%;overflow:hidden;border-radius:4px}
+.photo-page.l8 .uz img{width:100%;height:100%;object-fit:cover;display:block}`,
+
+  l9: `/* L9: 左直列 + 右上大下2小 */
+.photo-page.l9{display:flex;padding:16px 16px 28px;gap:12px;overflow:hidden}
+.photo-page.l9 .col-l{flex:0 0 30%;overflow:hidden;border-radius:4px}
+.photo-page.l9 .col-l img{width:100%;height:100%;object-fit:cover;display:block}
+.photo-page.l9 .col-r{flex:1;display:flex;flex-direction:column;gap:12px;min-width:0}
+.photo-page.l9 .uz-top{flex:1.4;overflow:hidden;border-radius:4px}
+.photo-page.l9 .row-bot{display:flex;flex:1;gap:12px}
+.photo-page.l9 .row-bot .uz{flex:1;overflow:hidden;border-radius:4px}
+.photo-page.l9 .uz img{width:100%;height:100%;object-fit:cover;display:block}`,
+
+  l10: `/* L10: 6張 3×2 等格 */
+.photo-page.l10{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;padding:16px 16px 28px;gap:10px;overflow:hidden}
+.photo-page.l10 .uz{overflow:hidden;border-radius:4px}
+.photo-page.l10 .uz img{width:100%;height:100%;object-fit:cover;display:block}`
+};
+
+const PHOTO_LAYOUT_NAMES = {
+  l1:'2張並排（等寬）', l2:'3張直式並排', l3:'左大右小',
+  l4:'左1+右2堆疊', l5:'4張2×2', l6:'上橫幅+下3張',
+  l7:'上2張+下橫幅', l8:'左直+右橫', l9:'左直列+右上大下2小', l10:'6張3×2'
+};
+
 /* ============== 產生 brief ============== */
 function generateBrief() {
-  const errors = [];
+  const errors = []; // { msg, el }
 
   const cat = document.getElementById('client-category').value;
   const name = document.getElementById('client-name').value.trim();
-  if (!cat) errors.push('客戶類別未選');
-  if (!name) errors.push('客戶全名未填');
+  if (!cat) errors.push({ msg: '客戶類別未選', el: document.getElementById('client-category') });
+  if (!name) errors.push({ msg: '客戶全名未填', el: document.getElementById('client-name') });
 
   const proposalType = document.querySelector('input[name="proposal-type"]:checked').value;
   const isEx = proposalType === 'exhibition';
@@ -553,9 +680,8 @@ function generateBrief() {
       name: row.querySelector('.ex-name').value.trim(),
       url: row.querySelector('.ex-url').value.trim()
     })).filter(e => e.name);
-    if (exhibitions.length === 0) errors.push('特定展覽模式下，至少要填 1 個展覽名稱');
+    if (exhibitions.length === 0) errors.push({ msg: '特定展覽模式下，至少要填 1 個展覽名稱', el: document.querySelector('.ex-name') });
   }
-  // 無特定展覽：不需驗證 exhibition / project 任何欄位
 
   // 服務
   const services = [];
@@ -566,24 +692,31 @@ function generateBrief() {
   document.querySelectorAll('.c-child').forEach(c => {
     if (c.checked) services.push(c.dataset.svc);
   });
-  if (services.length === 0) errors.push('至少要勾 1 個預期服務');
+  if (services.length === 0) errors.push({ msg: '至少要勾 1 個預期服務', el: document.getElementById('svc-A').closest('section') });
 
   // 提案風格
   const styleEl = document.querySelector('input[name="proposal-style"]:checked');
   const proposalStyle = styleEl ? styleEl.value : '';
-  if (!proposalStyle) errors.push('提案風格未選（文青溫暖版 / 科技黑金版）');
+  if (!proposalStyle) errors.push({ msg: '提案風格未選', el: document.getElementById('style-warm').closest('section') });
 
   // 業務資訊
   const sName = document.getElementById('sales-name').value.trim();
   const sDept = document.getElementById('sales-dept').value.trim();
   const sEmail = document.getElementById('sales-email').value.trim();
   const sPhone = document.getElementById('sales-phone').value.trim();
-  if (!sName || !sDept || !sEmail || !sPhone) {
-    errors.push('業務資訊未填完（姓名 / 部門 / Email / Phone 都要填）');
-  }
+  if (!sName) errors.push({ msg: '業務姓名未填', el: document.getElementById('sales-name') });
+  if (!sDept) errors.push({ msg: '部門未填', el: document.getElementById('sales-dept') });
+  if (!sEmail) errors.push({ msg: 'Email 未填', el: document.getElementById('sales-email') });
+  if (!sPhone) errors.push({ msg: 'Phone 未填', el: document.getElementById('sales-phone') });
 
   if (errors.length > 0) {
-    showError(errors.join('；'));
+    showError(errors.map(e => e.msg).join('；'));
+    const firstEl = errors[0].el;
+    setTimeout(() => {
+      firstEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      firstEl.classList.add('field-error');
+      setTimeout(() => firstEl.classList.remove('field-error'), 3500);
+    }, 800);
     return;
   }
 
@@ -643,10 +776,15 @@ function generateBrief() {
   const empCustomText = document.getElementById('emp-custom-text').value.trim();
   const attCases = document.getElementById('att-cases').checked;
   const attCasesNum = document.getElementById('att-cases-num').value.trim();
-  const attPhotos = document.getElementById('att-photos').checked;
-  const attPhotosNum = document.getElementById('att-photos-num').value.trim();
   const attFullbleed = document.getElementById('att-fullbleed').checked;
   const attFullbleedNum = document.getElementById('att-fullbleed-num').value.trim();
+
+  // 收集照片版型選擇（填了頁數 > 0 即算選取）
+  const selectedLayouts = [];
+  ['l1','l2','l3','l4','l5','l6','l7','l8','l9','l10'].forEach(id => {
+    const num = parseInt(document.getElementById('pl-' + id + '-num').value) || 0;
+    if (num > 0) selectedLayouts.push({ id, num });
+  });
 
   // 內容強調 + 附件 收集
   const emphasis = [];
@@ -659,48 +797,60 @@ function generateBrief() {
     attachments.push('案例頁 × ' + attCasesNum + ' 頁（**6 格圖卡 + 標題** 版型）');
     attachmentTotal += parseInt(attCasesNum) || 0;
   }
-  if (attPhotos && attPhotosNum) {
-    attachments.push('純照片頁 × ' + attPhotosNum + ' 頁（每頁最多 5 張，排版可自由；比例只能 16:9 / 9:16 / 1:1 / 3:4 / 4:3，不要其他怪比例；單張寬度至少佔頁寬 1/3）');
-    attachmentTotal += parseInt(attPhotosNum) || 0;
+  if (selectedLayouts.length > 0) {
+    selectedLayouts.forEach(({ id, num }) => {
+      attachments.push('純照片頁 ' + id.toUpperCase() + '（' + PHOTO_LAYOUT_NAMES[id] + '）× ' + num + ' 頁');
+      attachmentTotal += num;
+    });
   }
   if (attFullbleed && attFullbleedNum) {
     attachments.push('滿版頁 × ' + attFullbleedNum + ' 頁（扣除標題後滿版）');
     attachmentTotal += parseInt(attFullbleedNum) || 0;
   }
 
-  // 只要任何欄位有值才寫 section
-  const hasContent = isManualPages || emphasis.length || attachments.length;
-  if (hasContent) {
-    brief += '## 簡報細節（業務指定偏好）\n\n';
+  // 簡報細節永遠輸出（頁數指示是 AI 必須知道的事）
+  brief += '## 簡報細節（業務指定偏好）\n\n';
 
-    // 主內容頁數
-    brief += '### 主內容頁數\n';
-    if (isManualPages && (pagesMin || pagesMax)) {
-      brief += '- 業務指定：' + (pagesMin || '?') + '-' + (pagesMax || '?') + ' 頁\n';
-    } else {
-      brief += '- AI 自行推薦（業務希望給你發揮空間，請依 brief 內容自己決定主內容該幾頁）\n';
-    }
+  // 主內容頁數
+  brief += '### 主內容頁數\n';
+  if (isManualPages && (pagesMin || pagesMax)) {
+    brief += '- 業務指定：' + (pagesMin || '?') + '-' + (pagesMax || '?') + ' 頁\n';
+  } else {
+    brief += '- AI 自行推薦（業務希望給你發揮空間，請依 brief 內容自己決定主內容該幾頁）\n';
+  }
+  brief += '\n';
+
+  // 內容強調
+  if (emphasis.length) {
+    brief += '### 內容強調（整份提案的調性偏向）\n';
+    emphasis.forEach(e => brief += '- ' + e + '\n');
     brief += '\n';
+  }
 
-    // 內容強調
-    if (emphasis.length) {
-      brief += '### 內容強調（整份提案的調性偏向）\n';
-      emphasis.forEach(e => brief += '- ' + e + '\n');
-      brief += '\n';
+  // 附件 / 特殊版型
+  if (attachments.length) {
+    brief += '### 附件 / 特殊版型（額外加在主內容後面、不算入主內容頁數）\n';
+    attachments.forEach(a => brief += '- ' + a + '\n');
+    brief += '\n';
+    brief += '⚠️ **重要提醒給 AI**：上面 ' + attachmentTotal + ' 頁是「附件」，**不算入主內容頁數**。';
+    if (isManualPages && (pagesMin || pagesMax)) {
+      brief += '主內容請按業務指定的 ' + (pagesMin || '?') + '-' + (pagesMax || '?') + ' 頁，附件 ' + attachmentTotal + ' 頁額外加在後面。最終總頁數 = 主內容（' + (pagesMin || '?') + '-' + (pagesMax || '?') + '） + 附件（' + attachmentTotal + '）。';
+    } else {
+      brief += '主內容該幾頁你自己判斷（可參考 8-15 頁），附件 ' + attachmentTotal + ' 頁額外加在後面。最終總頁數 = 主內容 + 附件（' + attachmentTotal + '）。';
     }
+    brief += '\n\n';
 
-    // 附件 / 特殊版型
-    if (attachments.length) {
-      brief += '### 附件 / 特殊版型（額外加在主內容後面、不算入主內容頁數）\n';
-      attachments.forEach(a => brief += '- ' + a + '\n');
-      brief += '\n';
-      brief += '⚠️ **重要提醒給 AI**：上面 ' + attachmentTotal + ' 頁是「附件」，**不算入主內容頁數**。';
-      if (isManualPages && (pagesMin || pagesMax)) {
-        brief += '主內容請按業務指定的 ' + (pagesMin || '?') + '-' + (pagesMax || '?') + ' 頁，附件 ' + attachmentTotal + ' 頁額外加在後面。最終總頁數 = 主內容（' + (pagesMin || '?') + '-' + (pagesMax || '?') + '） + 附件（' + attachmentTotal + '）。';
-      } else {
-        brief += '主內容該幾頁你自己判斷（可參考 8-15 頁），附件 ' + attachmentTotal + ' 頁額外加在後面。最終總頁數 = 主內容 + 附件（' + attachmentTotal + '）。';
-      }
-      brief += '\n\n';
+    // 只有有選照片版型才輸出 CSS
+    if (selectedLayouts.length > 0) {
+      brief += '### 照片頁版型 CSS（直接嵌入提案 `<style>`，勿改 class 名稱）\n\n';
+      brief += '> 每頁頁面容器加對應 class，例如 `<div class="page photo-page l1">`。\n';
+      brief += '> 圖片佔位用 `<div class="uz"><img ...></div>`；子元素 class 按下方 CSS 命名。\n';
+      brief += '> 所有照片頁底部已留 28px 給頁碼，請勿讓任何元素超出 `overflow:hidden`。\n\n';
+      brief += '```css\n';
+      selectedLayouts.forEach(({ id }) => {
+        brief += PHOTO_CSS[id] + '\n\n';
+      });
+      brief += '```\n\n';
     }
   }
 
