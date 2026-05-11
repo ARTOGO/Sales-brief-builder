@@ -594,55 +594,56 @@ document.querySelectorAll('.checkbox-row').forEach(row => {
 /* ============== 照片版型 CSS 範本 ============== */
 const PHOTO_CSS = {
   l1: `/* L1: 2張並排（等寬）*/
-.photo-page.l1{display:flex;padding:16px 16px 28px;gap:12px;overflow:hidden}
+.photo-page.l1 .photo-body{display:flex;gap:12px}
 .photo-page.l1 .uz{flex:1;min-width:0;overflow:hidden;border-radius:4px}
 .photo-page.l1 .uz img{width:100%;height:100%;object-fit:cover;display:block}`,
 
   l2: `/* L2: 3張直式並排 */
-.photo-page.l2{display:flex;padding:16px 16px 28px;gap:12px;overflow:hidden;align-items:center;justify-content:center}
+.photo-page.l2 .photo-body{display:flex;gap:12px;align-items:center;justify-content:center}
 .photo-page.l2 .uz{flex:0 0 auto;height:100%;aspect-ratio:9/16;max-height:100%;overflow:hidden;border-radius:4px}
 .photo-page.l2 .uz img{width:100%;height:100%;object-fit:cover;display:block}`,
 
   l3: `/* L3: 左大右小 */
-.photo-page.l3{display:flex;padding:16px 16px 28px;gap:12px;overflow:hidden}
+.photo-page.l3 .photo-body{display:flex;gap:12px}
 .photo-page.l3 .uz-l{flex:0 0 62%;overflow:hidden;border-radius:4px}
 .photo-page.l3 .uz-r{flex:1;min-width:0;overflow:hidden;border-radius:4px}
 .photo-page.l3 .uz-l img,.photo-page.l3 .uz-r img{width:100%;height:100%;object-fit:cover;display:block}`,
 
   l4: `/* L4: 左1張 + 右2張堆疊 */
-.photo-page.l4{display:flex;padding:16px 16px 28px;gap:12px;overflow:hidden}
+.photo-page.l4 .photo-body{display:flex;gap:12px}
 .photo-page.l4 .uz-l{flex:0 0 52%;overflow:hidden;border-radius:4px}
 .photo-page.l4 .stack{flex:1;display:flex;flex-direction:column;gap:12px;min-width:0}
 .photo-page.l4 .stack .uz{flex:1;overflow:hidden;border-radius:4px}
 .photo-page.l4 .uz img{width:100%;height:100%;object-fit:cover;display:block}`,
 
   l5: `/* L5: 4張 2×2 等格 */
-.photo-page.l5{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;padding:16px 16px 28px;gap:12px;overflow:hidden}
+.photo-page.l5 .photo-body{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:12px}
 .photo-page.l5 .uz{overflow:hidden;border-radius:4px}
 .photo-page.l5 .uz img{width:100%;height:100%;object-fit:cover;display:block}`,
 
   l6: `/* L6: 上橫幅 + 下3張並排 */
-.photo-page.l6{display:flex;flex-direction:column;padding:16px 16px 28px;gap:12px;overflow:hidden}
+.photo-page.l6 .photo-body{display:flex;flex-direction:column;gap:12px}
 .photo-page.l6 .uz-top{flex:1;overflow:hidden;border-radius:4px}
 .photo-page.l6 .row{display:flex;flex:1;gap:12px}
 .photo-page.l6 .row .uz{flex:1;overflow:hidden;border-radius:4px}
 .photo-page.l6 .uz img{width:100%;height:100%;object-fit:cover;display:block}`,
 
   l7: `/* L7: 上2張 + 下橫幅 */
-.photo-page.l7{display:flex;flex-direction:column;padding:16px 16px 28px;gap:12px;overflow:hidden}
+.photo-page.l7 .photo-body{display:flex;flex-direction:column;gap:12px}
 .photo-page.l7 .row{display:flex;flex:1;gap:12px}
 .photo-page.l7 .row .uz{flex:1;overflow:hidden;border-radius:4px}
 .photo-page.l7 .uz-bot{flex:1;overflow:hidden;border-radius:4px}
 .photo-page.l7 .uz img{width:100%;height:100%;object-fit:cover;display:block}`,
 
-  l8: `/* L8: 左直 + 右橫（下對齊） */
-.photo-page.l8{display:flex;padding:16px 16px 28px;gap:12px;overflow:hidden;align-items:flex-end}
-.photo-page.l8 .uz-port{flex:0 0 auto;aspect-ratio:2/3;height:100%;overflow:hidden;border-radius:4px}
-.photo-page.l8 .uz-land{flex:1;aspect-ratio:16/9;align-self:flex-end;max-height:52%;overflow:hidden;border-radius:4px}
+  l8: `/* L8: 上3小方形 + 下橫幅 */
+.photo-page.l8 .photo-body{display:flex;flex-direction:column;gap:12px}
+.photo-page.l8 .row-top{display:flex;gap:12px;flex:0 0 38%}
+.photo-page.l8 .row-top .uz{flex:1;min-width:0;overflow:hidden;border-radius:4px}
+.photo-page.l8 .uz-land{flex:1;overflow:hidden;border-radius:4px}
 .photo-page.l8 .uz img{width:100%;height:100%;object-fit:cover;display:block}`,
 
   l9: `/* L9: 左直列 + 右上大下2小 */
-.photo-page.l9{display:flex;padding:16px 16px 28px;gap:12px;overflow:hidden}
+.photo-page.l9 .photo-body{display:flex;gap:12px}
 .photo-page.l9 .col-l{flex:0 0 30%;overflow:hidden;border-radius:4px}
 .photo-page.l9 .col-l img{width:100%;height:100%;object-fit:cover;display:block}
 .photo-page.l9 .col-r{flex:1;display:flex;flex-direction:column;gap:12px;min-width:0}
@@ -652,7 +653,7 @@ const PHOTO_CSS = {
 .photo-page.l9 .uz img{width:100%;height:100%;object-fit:cover;display:block}`,
 
   l10: `/* L10: 6張 3×2 等格 */
-.photo-page.l10{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;padding:16px 16px 28px;gap:10px;overflow:hidden}
+.photo-page.l10 .photo-body{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:1fr 1fr;gap:10px}
 .photo-page.l10 .uz{overflow:hidden;border-radius:4px}
 .photo-page.l10 .uz img{width:100%;height:100%;object-fit:cover;display:block}`
 };
@@ -843,10 +844,28 @@ function generateBrief() {
     // 只有有選照片版型才輸出 CSS
     if (selectedLayouts.length > 0) {
       brief += '### 照片頁版型 CSS（直接嵌入提案 `<style>`，勿改 class 名稱）\n\n';
-      brief += '> 每頁頁面容器加對應 class，例如 `<div class="page photo-page l1">`。\n';
-      brief += '> 圖片佔位用 `<div class="uz"><img ...></div>`；子元素 class 按下方 CSS 命名。\n';
-      brief += '> 所有照片頁底部已留 28px 給頁碼，請勿讓任何元素超出 `overflow:hidden`。\n\n';
+      brief += '> **HTML 結構（每頁照片頁）**：\n';
+      brief += '> ```html\n';
+      brief += '> <section class="page photo-page l1" id="pN">\n';
+      brief += '>   <div class="photo-header">\n';
+      brief += '>     <div class="photo-label">附件・現場照片</div>\n';
+      brief += '>     <div class="photo-title">AI 自由填寫標題</div>\n';
+      brief += '>   </div>\n';
+      brief += '>   <div class="photo-body">\n';
+      brief += '>     <!-- 各版型的 .uz / .uz-l / .uz-r 等放這裡 -->\n';
+      brief += '>   </div>\n';
+      brief += '>   <div class="upload-zone logo-zone" data-purpose="logo"></div>\n';
+      brief += '>   <div class="page-num">N / total</div>\n';
+      brief += '> </section>\n';
+      brief += '> ```\n';
+      brief += '> L8 的 `.photo-body` 內：`<div class="row-top">` 放3個 `.uz`，再放1個 `.uz-land`。\n\n';
       brief += '```css\n';
+      brief += '/* ── 照片頁共用（所有版型皆需） ── */\n';
+      brief += '.photo-page{display:flex;flex-direction:column;overflow:hidden;padding:20px 24px 28px}\n';
+      brief += '.photo-page .photo-header{flex-shrink:0;margin-bottom:10px}\n';
+      brief += '.photo-page .photo-label{font-size:11px;letter-spacing:.35em;color:var(--c-gold);text-transform:uppercase;font-weight:500;margin-bottom:6px}\n';
+      brief += '.photo-page .photo-title{font-size:22px;font-weight:700;color:var(--c-light);line-height:1.2}\n';
+      brief += '.photo-page .photo-body{flex:1;min-height:0;overflow:hidden}\n\n';
       selectedLayouts.forEach(({ id }) => {
         brief += PHOTO_CSS[id] + '\n\n';
       });
